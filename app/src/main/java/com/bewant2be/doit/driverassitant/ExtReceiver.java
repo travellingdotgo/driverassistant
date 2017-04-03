@@ -105,10 +105,11 @@ public class ExtReceiver extends BroadcastReceiver {
             webview.addJavascriptInterface(new InJavaScriptLocalObj(), "local_obj");
 
             SharedPreferences pref = context.getSharedPreferences("config", context.MODE_PRIVATE);
+            String province = pref.getString("province", "default");
             String licencePlate = pref.getString("licencePlate", "default");
             String enginID  = pref.getString("enginID","default");
 
-            String postData = Config.urlEncodePara(licencePlate,enginID) ;
+            String postData = Config.urlEncodePara( province, licencePlate,enginID) ;
             Log.v(TAG, "postData: " + postData);
             webview.postUrl(Config.sxgaUrl, postData.getBytes());
 
