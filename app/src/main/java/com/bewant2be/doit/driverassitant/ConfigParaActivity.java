@@ -34,10 +34,10 @@ public class ConfigParaActivity extends AppCompatActivity {
         btnSet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SharedPreferences.Editor editor = getSharedPreferences("config", MODE_PRIVATE).edit();
-                editor.putString("province", editTextProvince.getText().toString() );
-                editor.putString("licencePlate", editTextLicencePlate.getText().toString() );
-                editor.putString("enginID", editTextEngineId.getText().toString() );
+                SharedPreferences.Editor editor = getSharedPreferences( Config.PREF_ITEM, MODE_PRIVATE).edit();
+                editor.putString(Config.PREF_ITEM_TYPE_PROVINCE, editTextProvince.getText().toString() );
+                editor.putString(Config.PREF_ITEM_TYPE_LICENCEPLATE, editTextLicencePlate.getText().toString() );
+                editor.putString(Config.PREF_ITEM_TYPE_ENGINEID, editTextEngineId.getText().toString() );
                 editor.commit();
 
                 finish();

@@ -16,6 +16,8 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
 
+import com.bewant2be.doit.utilslib.ToastUtil;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONTokener;
@@ -28,95 +30,22 @@ public class ExtReceiver extends BroadcastReceiver {
     public void onReceive(final Context context, Intent intent) {
         Log.i(TAG, "ExtReceiver onReceive: " + intent.getAction());
 
-        WebView webview = new WebView( context.getApplicationContext() );
+        SharedPreferences pref = context.getSharedPreferences( Config.PREF_ITEM, context.MODE_PRIVATE);
+        String province = pref.getString(Config.PREF_ITEM_TYPE_PROVINCE, Config.VALUE_DEFAULT);
+        String licencePlate = pref.getString(Config.PREF_ITEM_TYPE_LICENCEPLATE, Config.VALUE_DEFAULT);
+        String enginID  = pref.getString(Config.PREF_ITEM_TYPE_ENGINEID,Config.VALUE_DEFAULT);
 
-        try {
-            webview.setWebViewClient(new WebViewClient() {
-                @Override
-                public void onPageStarted(WebView view, String url, Bitmap favicon) {
-                    super.onPageStarted(view, url, favicon);
-                }
+        if (        Config.VALUE_DEFAULT.equals(province)
+                ||  Config.VALUE_DEFAULT.equals(licencePlate)
+                ||  Config.VALUE_DEFAULT.equals(enginID)   ){
+            Log.e(TAG, "Config error");
+            TTS.play(context, "来吧 配置一下参数吧");
 
-                @Override
-                public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                    view.loadUrl(url);
-                    return true;
-                }
-
-                @Override
-                public void onPageFinished(WebView view, String url) {
-                    super.onPageFinished(view, url);
-                    view.loadUrl("javascript:window.local_obj.showSource('<head>'+"
-                            + "document.getElementsByTagName('html')[0].innerHTML+'</head>');");
-                }
-
-                @Override
-                public void onReceivedError(WebView view, int errorCode,
-                                            String description, String failingUrl) {
-                    super.onReceivedError(view, errorCode, description, failingUrl);
-                }
-
-            });
-
-
-
-
-            /**
-             *  android sdk api >= 17 时需要加@JavascriptInterface
-             * @author fei
-             *
-             */
-            final class InJavaScriptLocalObj {
-                @JavascriptInterface
-                public void showSource(String html) {
-                    int index = html.indexOf("共");
-                    Log.e(TAG, "index: " + index);
-                    int index2 = html.indexOf("条记录");
-                    Log.e(TAG, "index2: " + index2);
-
-                    final String txt = "Records: " +  html.subSequence(index+1, index2);
-                    Log.e(TAG, txt + "  " + Thread.currentThread().getName());
-
-                    MediaPlayer mp = MediaPlayer.create(context.getApplicationContext(), R.raw.violation);
-                    mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                        @Override
-                        public void onCompletion(MediaPlayer mp) {
-                            mp.reset();
-                            mp.release();
-                        }
-                    });
-                    mp.start();
-
-
-                    Handler handler = new Handler(Looper.getMainLooper());
-                    Runnable r = new Runnable(){
-                        @Override
-                        public void run() {
-                            Toast.makeText(context,txt,Toast.LENGTH_SHORT).show();
-                        }
-                    };
-
-                    handler.post(r);
-                }
-            }
-
-            WebSettings settings = webview.getSettings();
-            settings.setJavaScriptEnabled(true);
-            webview.addJavascriptInterface(new InJavaScriptLocalObj(), "local_obj");
-
-            SharedPreferences pref = context.getSharedPreferences("config", context.MODE_PRIVATE);
-            String province = pref.getString("province", "default");
-            String licencePlate = pref.getString("licencePlate", "default");
-            String enginID  = pref.getString("enginID","default");
-
-            String postData = Config.urlEncodePara( province, licencePlate,enginID) ;
-            Log.v(TAG, "postData: " + postData);
-            webview.postUrl(Config.sxgaUrl, postData.getBytes());
-
-        }catch (Exception e){
-
+            Intent intentUI = new Intent(context, ConfigParaActivity.class);
+            intentUI.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(intentUI);
         }
 
-
+        Querry.query(context, province, licencePlate, enginID);
     }
 }
