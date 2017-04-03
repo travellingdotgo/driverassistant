@@ -1,0 +1,28 @@
+apply plugin: 'com.android.application'
+apply from: 'https://raw.githubusercontent.com/travellingdotgo/JcenterTest/master/app/version.gradle'
+
+android {
+    compileSdkVersion 23
+    buildToolsVersion "23.0.1"
+
+    defaultConfig {
+        applicationId "com.bewant2be.doit.driverassitant"
+        minSdkVersion 19
+        targetSdkVersion 23
+        versionCode gitVersionCode()
+        versionName gitFullVersionTag()
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    testCompile 'junit:junit:4.12'
+    compile 'com.android.support:appcompat-v7:23.4.0'
+    compile 'com.android.support:design:23.4.0'
+}

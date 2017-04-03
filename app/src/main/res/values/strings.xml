@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">driverassitant</string>
+    <string name="title_activity_config_para">ConfigParaActivity</string>
+</resources>
