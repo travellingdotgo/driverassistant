@@ -51,7 +51,7 @@ public class TTS {
         //1.创建 SpeechSynthesizer 对象, 第二个参数：本地合成时传 InitListener
         SpeechSynthesizer mTts=SpeechSynthesizer.createSynthesizer(context, null);
         //2.合成参数设置
-        mTts.setParameter(SpeechConstant.VOICE_NAME, "xiaoxin");
+        mTts.setParameter(SpeechConstant.VOICE_NAME, "xiaoyan");
         mTts.setParameter(SpeechConstant.SPEED, "50");
         mTts.setParameter(SpeechConstant.VOLUME, "100");
         mTts.setParameter(SpeechConstant.ENGINE_TYPE, SpeechConstant.TYPE_CLOUD); //设置云端

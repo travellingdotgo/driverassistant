@@ -65,7 +65,7 @@ public class Querry {
                     final String txt = html.substring(index+1, index2);
                     Log.i(TAG, txt + "  " + Thread.currentThread().getName());
 
-                    TTS.play(context, "你有" + txt + "条违章记录, 我替你感到难过哦");
+                    TTS.play(context, "你有" + txt + "条违章记录, 你6月份该年检了");
 
                     ToastUtil.toastComptible(context, "Records: " + txt);
                 }
