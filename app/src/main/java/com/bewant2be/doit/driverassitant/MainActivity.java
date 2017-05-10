@@ -25,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
         Context context = getApplicationContext();
 
         Intent intent = new Intent("com.bewant2be.doit.AM");
+        intent.setFlags(Intent.FLAG_RECEIVER_FOREGROUND);
         sendBroadcast(intent);
     }
 }

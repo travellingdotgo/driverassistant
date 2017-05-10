@@ -1,5 +1,5 @@
 apply plugin: 'com.android.application'
-apply from: 'https://raw.githubusercontent.com/travellingdotgo/JcenterTest/master/app/version.gradle'
+apply from: 'https://raw.githubusercontent.com/bewant2be/androidbuild/master/version.gradle'
 
 android {
     compileSdkVersion 23
